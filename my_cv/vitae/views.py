@@ -1,8 +1,5 @@
-from django.views.generic.base import TemplateView, View
-from django.template.loader import render_to_string
-from django.http import HttpResponse
+from django.views.generic import TemplateView, FormView
 from django.shortcuts import render
-from .utils import to_pdf
 
 
 class BaseHomeView(TemplateView):
@@ -10,8 +7,12 @@ class BaseHomeView(TemplateView):
     template_name = 'my_cv/home/index.html'
 
 
-class ModalFormView(View):
-    http_method_names = ['get']
+class ModalFormView(FormView):
+    http_method_names = ['get', 'post']
+    form_class = ...
 
-    def get(self, *args, **kwargs):
-        return render(self.request, 'my_cv/home/modal_form.html')
+    def get(self, request, *args, **kwargs):
+        return render(request, 'my_cv/home/modal_form.html')
+
+    def form_valid(self, form):
+        return super().form_valid(form)

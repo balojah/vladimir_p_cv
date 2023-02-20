@@ -21,8 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'core.apps.CoreConfig',
-    'vitae.apps.VitaeConfig'
+    'core',
+    'vitae'
 ]
 
 MIDDLEWARE = [
