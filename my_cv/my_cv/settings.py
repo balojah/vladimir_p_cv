@@ -7,11 +7,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-xge$kfkw^#=j*certz=y4_qmx1@974&=+_irbj7o-&icdyxu8h'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-xge$kfkw^#=j*certz=y4_qmx1@974&=+_irbj7o-&icdyxu8h')
 
 DEBUG = bool(int(os.getenv('DEBUG', 1)))
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', ['*'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -96,6 +96,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', None)
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', None)
+
 # DRF
 REST_FRAMEWORK = {
     # Use hyperlinked styles by default.
@@ -111,5 +119,5 @@ REST_FRAMEWORK = {
 # Celery
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", None)
 # CELERY_TIMEZONE = env.str("CELERY_TIMEZONE", "America/Montevideo")
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_CACHE_BACKEND = "django-cache"
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', None)
+# CELERY_CACHE_BACKEND = "django-cache"

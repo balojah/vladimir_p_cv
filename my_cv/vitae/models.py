@@ -17,4 +17,4 @@ class ContactModel(BaseAbsModel):
 @receiver(post_save, sender=ContactModel)
 def create_user(instance, created, **kwargs):
     if created:
-        time.sleep(60)
+        time.sleep(3)

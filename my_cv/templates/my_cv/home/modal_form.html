@@ -1,30 +1,41 @@
-<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title">Feel free to fill in contact form</h5>
-    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-  </div>
-  <div class="modal-body">
-    <div class="mb-3">
-      <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
-      <div class="invalid-feedback">{{ form.title.errors|first }}</div>
+<div id="modal" class="modal fade">
+    <div id="dialog" class="modal-dialog">
+        <form method="post" class="modal-content">
+          {% csrf_token %}
+            <div class="modal-header">
+            <h5 class="modal-title">Please, feel free to fill in contact form.</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}" class="form-label">Title (<i>required</i>):</label>
+                    {{ form.title }}
+                <div class="alert-danger">{{ form.title.errors|first }}</div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.subject.id_for_label }}" class="form-label">Subject (<i>required</i>):</label>
+                {{ form.subject }}
+                <div class="alert-danger">{{ form.subject.errors|first }}</div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.email.id_for_label }}" class="form-label">Email (<i>optional</i>):</label >
+                {{ form.email }}
+              <div class="alert-danger">{{ form.email.errors|first }}</div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.contacts.id_for_label }}" class="form-label">Additional contacts (<i>optional</i>):</label >
+                {{ form.contacts }}
+              <div class="alert-danger">{{ form.contacts.errors|first }}</div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-success">Send</button>
+          </div>
+        </form>
     </div>
-    <div class="mb-3">
-      <label for="{{ form.year.id_for_label }}" class="form-label">Year</label>
-      <div class="invalid-feedback">{{ form.year.errors|first }}</div>
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.rating.id_for_label }}" class="form-label">Rating</label >
-      <div class="invalid-feedback">{{ form.rating.errors|first }}</div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    {% if movie %}
-    <button type="button" class="btn btn-danger" hx-post="">Remove</button>
-    <span class="flex-grow-1"></span>
-    {% endif %}
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-      Cancel
-    </button>
-    <button type="submit" class="btn btn-primary">Send</button>
-  </div>
-</form>
+</div>

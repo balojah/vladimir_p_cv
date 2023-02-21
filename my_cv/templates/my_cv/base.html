@@ -18,7 +18,10 @@
 </head>
 {% endblock header %}
 
-{% block content %} {% endblock content %}
+{% block content %}
+    {% block modal %}
+    {% endblock %}
+{% endblock content %}
 
 {% block js %}
 <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>

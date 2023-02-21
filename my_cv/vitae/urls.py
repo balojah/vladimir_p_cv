@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import BaseHomeView, ModalFormView
+from .views import BaseHomeView
 
 urlpatterns = [
-    path('', BaseHomeView.as_view()),
-    path('modalform/', ModalFormView.as_view(), name='modalform')
+    path('', BaseHomeView.as_view())
 ]
