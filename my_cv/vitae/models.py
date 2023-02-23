@@ -1,10 +1,9 @@
-import time
-
-from core.models import BaseAbsModel
-
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from core.models import BaseAbsModel
+from .tasks import send_email
 
 
 class ContactModel(BaseAbsModel):
@@ -15,6 +14,6 @@ class ContactModel(BaseAbsModel):
 
 
 @receiver(post_save, sender=ContactModel)
-def create_user(instance, created, **kwargs):
+def create_contact(instance, created, **kwargs):
     if created:
-        time.sleep(3)
+        transaction.on_commit(send_email.s(instance.title, instance.subject).delay)
