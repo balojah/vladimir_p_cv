@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN groupadd -r user && useradd -r -g user user
 
-RUN mkdir /home/my_cv
+RUN mkdir /home/my_cv && chown -R user:user /home/my_cv
 
 WORKDIR /home/my_cv
 
@@ -19,4 +19,3 @@ RUN sed -i 's/\r$//g'  /home/my_cv/entrypoint.sh
 RUN chmod +x /home/my_cv/entrypoint.sh
 
 USER user
-
