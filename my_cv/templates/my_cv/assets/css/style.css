@@ -218,7 +218,8 @@ body {
   .profile-box .left-side {
     background-color: #00ab9f;
     color: #FFF;
-    padding: 40px 20px; }
+    padding: 40px 20px;
+    height: 100%;}
     .profile-box .left-side .profile-info {
       padding: 5px;
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);

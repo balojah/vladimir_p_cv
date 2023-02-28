@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  my_cv:
+    container_name: my_cv
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ["sh", "/home/my_cv/entrypoint.sh"]
+    restart: always
+    volumes:
+#      - ./my_cv:/home/my_cv
+      - my_cv_vol:/home/my_cv
+      - static:/home/my_cv/static
+      - conf:/home/my_cv/nginx
+    expose:
+      - "5005"
+    env_file:
+      - .env.file
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - redis
+
+  celery:
+    container_name: celery
+    build: ./
+    command: celery -A my_cv worker -l info
+    restart: always
+    volumes:
+#      - ./my_cv:/home/my_cv
+      - my_cv_vol:/home/my_cv
+    env_file:
+      - .env.file
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - my_cv
+
+
+  nginx:
+    container_name: nginx
+    restart: always
+    image: "nginx:latest"
+    ports:
+      - "80:8080"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - static:/home/my_cv/static
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - my_cv
+
+
+  redis:
+    image: redis:alpine
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  my_cv_vol:
+  static:
+  conf:
