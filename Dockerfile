@@ -7,6 +7,8 @@ RUN groupadd -r user && useradd -r -g user user
 
 RUN mkdir /home/my_cv && chown -R user:user /home/my_cv
 
+RUN mkdir /home/my_cv/static && chown -R user:user /home/my_cv/static
+
 WORKDIR /home/my_cv
 
 RUN pip install --upgrade pip
