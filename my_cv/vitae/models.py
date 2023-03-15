@@ -1,4 +1,4 @@
-from django.db import models, transaction
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -16,4 +16,4 @@ class ContactModel(BaseAbsModel):
 @receiver(post_save, sender=ContactModel)
 def create_contact(instance, created, **kwargs):
     if created:
-        transaction.on_commit(send_email.s(instance.title, instance.subject).delay)
+        send_email.delay(instance.title, instance.subject)

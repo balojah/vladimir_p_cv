@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  my_cv:
+    container_name: my_cv
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ["sh", "/home/my_cv/entrypoint.sh"]
+    restart: always
+    volumes:
+      - my_cv_vol:/home/my_cv
+      - static:/home/my_cv/static
+    expose:
+      - "5005"
+    env_file:
+      - .env.prod
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - redis
+
+  celery:
+    container_name: celery
+    build: ./
+    command: celery -A my_cv worker -l info
+    restart: always
+    volumes:
+      - my_cv_vol:/home/my_cv
+    env_file:
+      - .env.prod
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - my_cv
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: my_cv/nginx
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - static:/var/www/html/static
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - my_cv
+
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - .env.proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - nginx-proxy
+
+  redis:
+    image: redis:alpine
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  my_cv_vol:
+  static:
+  conf:
+  certs:
+  html:
+  vhost:
+  acme:
