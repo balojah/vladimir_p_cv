@@ -110,15 +110,8 @@
                             {% include 'my_cv/home/modal_form.html' %}
                         {% endblock %}
 
-                        <!-- Empty toast to show the message -->
-                        <div class="toast-container position-fixed top-0 end-0 p-3">
-                          <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="d-flex">
-                              <div id="toast-body" class="toast-body"></div>
-                              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                          </div>
-                        </div>
+
+                        {% include 'my_cv/home/messages.html' %}
 
                         <h2 class="rit-titl"><i class="fas fa-briefcase"></i> Work Experience</h2>
                         <div class="work-exp">
@@ -237,15 +230,13 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"> </script>
-<script type="text/javascript" src="{% static 'assets/js/toast.js' %}"> </script>
 <script>
 $(document).ready(function() {
     {% if form.errors %}
     $("#modal").modal("show");
     {% endif %}
 });
-</script>
-<script>
+
 function CreatePDFfromHTML() {
       let createPdf = document.body;
       // let createPdf = document.getElementById("html-content");

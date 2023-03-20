@@ -10,11 +10,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
-DEBUG = bool(int(os.getenv('DEBUG', 1)))
+DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*')]
 
+# Security for production
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = bool(int(os.getenv('SECURE_SSL_REDIRECT', True)))
+SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', 2592000))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = bool(int(os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', True)))
+SECURE_HSTS_PRELOAD = bool(int(os.getenv('SECURE_HSTS_PRELOAD', True)))
+
+SESSION_COOKIE_SECURE = bool(int(os.getenv('SESSION_COOKIE_SECURE', True)))
+CSRF_COOKIE_SECURE = bool(int(os.getenv('CSRF_COOKIE_SECURE ', True)))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,9 +63,11 @@ TEMPLATES = [
     },
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 WSGI_APPLICATION = 'my_cv.wsgi.application'
 
+# For such easy purposes other databases seems overwhelming
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

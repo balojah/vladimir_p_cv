@@ -10,10 +10,10 @@ class ContactModel(BaseAbsModel):
 
     subject = models.CharField(max_length=255, blank=False, null=False)
     email = models.EmailField(blank=True, null=True)
-    contacts = models.CharField(max_length=100, null=True, blank=True)
+    contacts = models.CharField(max_length=100, blank=True, null=True)
 
 
 @receiver(post_save, sender=ContactModel)
 def create_contact(instance, created, **kwargs):
     if created:
-        send_email.delay(instance.title, instance.subject)
+        send_email.delay(instance.title, instance.subject, instance.email, instance.contacts)
