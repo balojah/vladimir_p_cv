@@ -18,6 +18,6 @@ class BaseTaskWithRetry(Task, ABC):
 @shared_task(bind=True, base=BaseTaskWithRetry)
 def send_email(self, title, subject, email, contacts, *args):
     send_mail(subject=title,
-              message=f'{subject = }\n, {email = }\n, {contacts = }',
+              message=f'{subject = },\n {email = },\n {contacts = }',
               from_email=EMAIL_HOST_USER,
               recipient_list=[EMAIL_HOST_USER])

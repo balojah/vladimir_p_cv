@@ -9,10 +9,8 @@ services:
     command: ["sh", "/home/my_cv/entrypoint.sh"]
     restart: always
     volumes:
-#      - ./my_cv:/home/my_cv
-      - my_cv_vol:/home/my_cv
+      - ./my_cv:/home/my_cv
       - static:/home/my_cv/static
-      - conf:/home/my_cv/nginx
     expose:
       - "5005"
     env_file:
@@ -30,8 +28,7 @@ services:
     command: celery -A my_cv worker -l info
     restart: always
     volumes:
-#      - ./my_cv:/home/my_cv
-      - my_cv_vol:/home/my_cv
+      - ./my_cv:/home/my_cv
     env_file:
       - .env.file
     logging:
@@ -49,7 +46,7 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - conf:/etc/nginx/conf.d
+      - ./my_cv/nginx:/etc/nginx/conf.d
       - static:/home/my_cv/static
     logging:
       options:
@@ -68,6 +65,4 @@ services:
         max-file: "3"
 
 volumes:
-  my_cv_vol:
   static:
-  conf:
