@@ -22,7 +22,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = bool(int(os.getenv('SECURE_HSTS_INCLUDE_SUBDOMA
 SECURE_HSTS_PRELOAD = bool(int(os.getenv('SECURE_HSTS_PRELOAD', True)))
 
 SESSION_COOKIE_SECURE = bool(int(os.getenv('SESSION_COOKIE_SECURE', True)))
-CSRF_COOKIE_SECURE = bool(int(os.getenv('CSRF_COOKIE_SECURE ', True)))
+CSRF_COOKIE_SECURE = bool(int(os.getenv('CSRF_COOKIE_SECURE', True)))
 
 INSTALLED_APPS = [
     'django.contrib.admin',

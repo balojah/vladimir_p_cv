@@ -15,6 +15,7 @@ services:
       - "5005"
     env_file:
       - .env.prod
+      - .env.letsencrypt
     logging:
       options:
         max-size: "10m"
@@ -86,7 +87,6 @@ services:
 volumes:
   my_cv_vol:
   static:
-  conf:
   certs:
   html:
   vhost:
