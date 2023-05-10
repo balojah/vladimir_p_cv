@@ -4,7 +4,9 @@ My personal website and online CV: [balojah.pp.ua](https://balojah.pp.ua)
 
 ## Description
 
-A simplie django application. 
+The simplest django application. Uses [jwilder/docker-letsencrypt-nginx-proxy-companion
+](https://github.com/jwilder/docker-letsencrypt-nginx-proxy-companion) for creation/renewal of Let's Encrypt 
+certificates automatically.
 
 ## Build Setup
 

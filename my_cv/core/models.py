@@ -17,6 +17,9 @@ class BaseDateMixin(models.Model):
 class BaseAbsModel(BaseDateMixin):
 
     title = models.CharField(max_length=50, blank=False, null=False)
+    subject = models.CharField(max_length=255, blank=False, null=False)
+    email = models.EmailField(blank=True, null=True)
+    contacts = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.title
