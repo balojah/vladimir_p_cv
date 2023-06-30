@@ -10,3 +10,7 @@ class BaseHomeView(SuccessMessageMixin, CreateView):
     template_name = 'my_cv/home/index.html'
     success_message = 'Thank you. I will contact you as soon as possible.'
     success_url = reverse_lazy('home_view')
+
+    def post(self, request, *args, **kwargs):
+        print(f'{[*request]}{args = }{kwargs = }')
+        return super().post(request, *args, **kwargs)
