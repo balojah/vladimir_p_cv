@@ -24,7 +24,7 @@ jobs:
     needs: test
     steps:
       - name: Stop and remove containers, networks
-        run: docker compose down -v --remove-orphans
+        run: docker compose -f docker-compose.prod.yml down -v --remove-orphans
       - name: Remove unused data
         run: docker system prune -a -f
   deploy:
