@@ -23,6 +23,10 @@ jobs:
     runs-on: self-hosted
     needs: test
     steps:
+      - name: copy env secrets
+        run: |
+          echo "${{ secrets.ENV_PROD }}" > .env.prod
+          echo "${{ secrets.ENV_LETSENCRYPT }}" > .env.letsencrypt
       - name: Stop and remove containers, networks
         run: docker compose -f docker-compose.prod.yml down -v --remove-orphans
       - name: Remove unused data
