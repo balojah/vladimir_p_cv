@@ -26,7 +26,7 @@ class HomeURLTestCase(TestCase):
     @patch('vitae.tasks.send_email.delay')
     def test_post_ok_with_email_sent(self, mock_email):
         """
-        Test that on model creation, post_save signal
+        Test that on model creation post_save signal
         triggers celery task with proper mail sent
         """
         model = ContactModel.objects.create(title='Greetings!', subject='Contact me.')
