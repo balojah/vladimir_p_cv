@@ -18,7 +18,7 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: run tests
-        run: python my_cv/manage.py test
+        run: coverage my_cv/manage.py test
   prepare-environment:
     runs-on: self-hosted
     needs: test
