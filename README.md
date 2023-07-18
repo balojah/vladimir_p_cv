@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/balojah/vladimir_p_cv/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/balojah/vladimir_p_cv?branch=main)
+![example workflow](https://github.com/balojah/vladimir_p_cv/actions/workflows/ci-example.yml/badge.svg)
 # balojah.pp.ua
 
 My personal website and online CV: [balojah.pp.ua](https://balojah.pp.ua)

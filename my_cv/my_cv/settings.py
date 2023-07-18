@@ -3,26 +3,33 @@ Django settings for my_cv project.
 """
 
 import os
+import environ
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
+# env = environ.Env(DEBUG=(bool, False))
+env = environ.Env()
 
-DEBUG = bool(int(os.getenv('DEBUG', 0)))
+env.read_env(os.path.join(BASE_DIR.parent, '.env.prod'))
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '*')]
+env.read_env(os.path.join(BASE_DIR.parent, '.env.letsencrypt'))
 
-# Security for production
+SECRET_KEY = env('SECRET_KEY', default=get_random_secret_key())
+
+DEBUG = env('DEBUG', cast=bool)
+
+ALLOWED_HOSTS = [env('ALLOWED_HOSTS', default='*')]
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = bool(int(os.getenv('SECURE_SSL_REDIRECT', True)))
-SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', 2592000))
-SECURE_HSTS_INCLUDE_SUBDOMAINS = bool(int(os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', True)))
-SECURE_HSTS_PRELOAD = bool(int(os.getenv('SECURE_HSTS_PRELOAD', True)))
+SECURE_SSL_REDIRECT = env('SECURE_SSL_REDIRECT', default=True)
+SECURE_HSTS_SECONDS = env('SECURE_HSTS_SECONDS', default=2592000)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=True)
+SECURE_HSTS_PRELOAD = env('SECURE_HSTS_PRELOAD', default=True)
 
-SESSION_COOKIE_SECURE = bool(int(os.getenv('SESSION_COOKIE_SECURE', True)))
-CSRF_COOKIE_SECURE = bool(int(os.getenv('CSRF_COOKIE_SECURE', True)))
+SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE', default=True)
+CSRF_COOKIE_SECURE = env('CSRF_COOKIE_SECURE', default=True)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -67,12 +74,18 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 WSGI_APPLICATION = 'my_cv.wsgi.application'
 
-# For such easy purposes other databases seems overwhelming
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': env('DB_ENGINE', default='django.db.backends.sqlite3'),
+        'HOST': env('DB_HOST', default=''),
+        'PORT': env('DB_PORT', default=''),
+        'USER': env('DB_USER', default=''),
+        'PASSWORD': env('DB_PASSWORD', default=''),
+        'NAME': env('DB_NAME', default=str(BASE_DIR / 'db.sqlite3')),
+        'TEST': {
+            'NAME': 'mytestdb'
+        },
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -113,9 +126,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', None)
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', None)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default=None)
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default=None)
 
 # Celery
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", None)
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', None)
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default=None)
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default=None)
